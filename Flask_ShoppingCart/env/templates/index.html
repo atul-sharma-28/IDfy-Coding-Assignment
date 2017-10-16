@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Shopping Cart</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+	function modify_qty(val, input_id) {
+    var qty = document.getElementById(input_id).value;
+    var new_qty = parseInt(qty,10) + val;
+    
+    if (new_qty < 0) {
+        new_qty = 0;
+    }
+    
+    document.getElementById(input_id).value = new_qty;
+    return new_qty;
+}
+  </script>
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+      font-size: large;
+    }
+    
+    /* Remove the page header's default margins */ 
+     .page-header {
+      margin: 0;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    
+    /* Make list items float left and their width be 1/3rd of the list width*/
+    .thumbnails > li {
+    	float: left;
+    	margin: 1.16%;
+    	width: 30%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="container text-center">
+    <h1>Flask Shopping Cart</h1>      
+    <p>Products, Discount & Checkout</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-th"></span>Products</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<ul class="thumbnails" style="list-style: none;">
+				{% for item in items %}
+				<li class="span2">
+					<div class="thumbnail">
+						<img src="http://via.placeholder.com/500x300/1c92d2/f2fcfe" alt="">
+						<div class="caption" style="text-align:center">
+							<h3>{{ item.product_name }}</h3>
+							<h4>&#8377 {{ item.product_price }}</h4>
+						</div>
+						<div class="span12" style="text-align:center">
+							
+							<!--<a href="/addToCart?productId={{item.item_id}}" class="btn btn-success btn-md" role="button">Add to Cart</a>-->
+							<form action="/addToCart?productId={{item.product_id}}" method="post">
+								<label><abbr title="Quantity">Qty</abbr></label>
+								<div class="span12">
+									<div class="input-group" style="width: 60%; margin:0 auto;">
+										<div class="input-group-btn">
+											<button class="btn btn-default" onclick="modify_qty(-1, {{item.product_id}})" type="button"><span class="glyphicon glyphicon-minus"></span></button>
+										</div>
+										<input id="{{item.product_id}}" name="qty" value="0" class="form-control" style="text-align:center"/>
+										<div class="input-group-btn">
+											<button class="btn btn-default" onclick="modify_qty(+1, '{{item.product_id}}')" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<button class="btn btn-success btn-md" type="submit"><span class="glyphicon glyphicon-plus"></span> Add to Cart </button>
+								</div>
+								
+							</form>
+							<br>
+						</div>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+</div><br><br>
+
+</body>
+</html>
+

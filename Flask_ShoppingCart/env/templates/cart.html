@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Shopping Cart</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+      font-size: large;
+    }
+    
+    /* Remove the page header's default margins */ 
+     .page-header {
+      margin: 0;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    
+    /* Make list items float left and their width be 1/3rd of the list width*/
+    .thumbnails > li {
+    	float: left;
+    	margin: 1.16%;
+    	width: 30%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="container text-center">
+    <h1>Flask Shopping Cart</h1>      
+    <p>Products, Discount & Checkout</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/"><span class="glyphicon glyphicon-th"></span>Products</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+	<div class="row">
+		<div class="container-fluid text-center">
+			{% if not items %}
+			<h3 > Cart is empty </h3>
+			{% else %}
+			<ul class="thumbnails" style="list-style: none;">
+				{% for item in items %}
+				<li class="span2">
+					<div class="thumbnail">
+						<img src="http://via.placeholder.com/500x300/1c92d2/f2fcfe" alt="">
+						<div class="caption" style="text-align:center">
+							<h3>{{ item.product_name }}</h3>
+							<h4>&#8377 {{ item.product_price }}</h4>
+							<p>Qty: {{ item.product_qty }}</p>
+						</div>
+						<div class="span12" style="text-align:center">
+							
+							<!--<a href="/addToCart?productId={{item.item_id}}" class="btn btn-success btn-md" role="button">Add to Cart</a>-->
+							<form action="/removeFromCart?productId={{item.product_id}}" method="post">
+								<button class="btn btn-danger btn-md" type="submit"><span class="glyphicon glyphicon-remove"></span> Remove from Cart </button>
+							</form>
+							<br>
+						</div>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+</div>
+</div><br><br>
+
+<footer class="container-fluid text-center">
+  <h4>Subtotal: &#8377 {{ total_price }}</h4>  
+  <h4>Discount: &#8377 {{ discount }}</h4>
+  <h3>Total: &#8377 {{ total_price - discount }}</h3>
+</footer>
+
+</body>
+</html>
+
